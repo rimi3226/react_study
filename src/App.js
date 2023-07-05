@@ -65,9 +65,9 @@ function Create(props) {
 }
 
 //Update
-function Update(props){
-  const [title,setTitle]=useState(props.title);
-  const [body,setBody]=useState(props.body);
+function Update(props) {
+  const [title, setTitle] = useState(props.title);
+  const [body, setBody] = useState(props.body);
   return (
     <article>
       <h2>Update</h2>
@@ -77,10 +77,10 @@ function Update(props){
         const body = event.target.body.value;
         props.onUpdate(title, body);
       }}>
-        <p><input type="text" name="title" placeholder='title' value={title} onChange={event=>{
+        <p><input type="text" name="title" placeholder='title' value={title} onChange={event => {
           setTitle(event.target.value);
-        }}/></p>
-        <p><textarea name="body" placeholder='body' value={body} onChange={event=>{
+        }} /></p>
+        <p><textarea name="body" placeholder='body' value={body} onChange={event => {
           setBody(event.target.value);
         }}></textarea></p>
         <p><input type="submit" value="Update"></input></p>
@@ -103,7 +103,7 @@ function App() {
 
   //모드 설정
   let content = null;
-  let contextControl=null;
+  let contextControl = null;
   if (mode === 'WELCOME') {
     content = <Article title="Welcome" body="Hello, Web"></Article>
 
@@ -116,11 +116,24 @@ function App() {
       }
     }
     content = <Article title={title} body={body}></Article>
-    contextControl= <li><a href={'/update'+id} onClick={event=>{
-      event.preventDefault();
-      setMode('UPDATE');
-    }}>Update</a></li>
 
+    contextControl = <>
+      <li><a href={'/update' + id} onClick={event => {
+        event.preventDefault();
+        setMode('UPDATE');
+      }}>Update</a></li>
+
+      {/* Delete */}
+      <li><input type='button' value='Delete' onClick={() => {
+        const newTopics = [];
+        for (let i = 0; i < topics.length; i++) {
+          if (topics[i].id !== id) {
+            newTopics.push(topics[i]);
+          }
+        }
+        setTopics(newTopics);
+      }} /></li>
+    </>
   } else if (mode === 'CREATE') {
     content = <Create onCreate={(_title, _body) => {
       const newTopic = { id: nextId, title: _title, body: _body };
@@ -134,7 +147,7 @@ function App() {
       setId(nextId);
       setNextId(nextId + 1);
     }}></Create>
-  } else if(mode === 'UPDATE'){
+  } else if (mode === 'UPDATE') {
     let title, body = null;
     for (let i = 0; i < topics.length; i++) {
       if (topics[i].id === id) { //id를 State로 만든 이유. 여기에서 사용하려고
@@ -142,12 +155,12 @@ function App() {
         body = topics[i].body;
       }
     }
-    content =<Update title={title} body={body} onUpdate={(title,body)=>{
-      const newTopics=[...topics];
-      const updatedTopic={id:id, title:title, body:body};
+    content = <Update title={title} body={body} onUpdate={(title, body) => {
+      const newTopics = [...topics];
+      const updatedTopic = { id: id, title: title, body: body };
       for (let i = 0; i < newTopics.length; i++) {
         if (topics[i].id === id) { //id를 State로 만든 이유. 여기에서 사용하려고
-          newTopics[i]=updatedTopic;
+          newTopics[i] = updatedTopic;
           break;
         }
       }
@@ -177,7 +190,7 @@ function App() {
         }}>Create</a></li>
         {contextControl}
       </ul>
-        
+
     </div>
   );
 }
