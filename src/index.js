@@ -3,6 +3,28 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { HashRouter, Route, Routes, NavLink, useParams } from 'react-router-dom';
+import styled from 'styled-components';
+const SimpleButton=styled.button`
+  color:white;
+  background-color:green;
+`;
+
+const LargeButton=styled(SimpleButton)`
+  font-size:50px;
+`
+
+const ReactButton=props=>{
+  return <button className={props.className}>{props.children}</button>
+}
+
+const ReactLargeButton=styled(ReactButton)`
+  font-size:50px;
+`
+
+const PrimaryButton=styled.button`
+  color: ${props=>props.primary?'white':'black'};
+  background-color: ${props=>props.primary?'blue':'gray'}
+`
 
 var contents=[
   {id:1,title:'HTML',description:'HTML is ...'},
@@ -10,6 +32,8 @@ var contents=[
   {id:3,title:'React',description:'React is ...'},
 
 ]
+
+
 
 function Home() {
   return (
@@ -36,7 +60,13 @@ function Topic(){
   return (
     <div>
       <h3>{selected_topic.title}</h3>
-        {selected_topic.description}
+      {selected_topic.description}
+      <SimpleButton>Simple</SimpleButton>
+      <LargeButton>Large</LargeButton>
+      <ReactButton>React</ReactButton>
+      <ReactLargeButton>React</ReactLargeButton>
+      <PrimaryButton>Primary</PrimaryButton>
+      <PrimaryButton primary>Primary</PrimaryButton>
     </div>
   )
 }
